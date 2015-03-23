@@ -1,0 +1,7 @@
+{
+  "name": "suberi",
+  "dependencies": {
+    "finalhandler": "^0.3.0",
+    "serve-static": "^1.6.4"
+  }
+}
