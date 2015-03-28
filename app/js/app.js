@@ -2,7 +2,8 @@
 
 var App = window.App = {};
 
-var $app, renderer, camera, scene;
+var $app, renderer, camera, scene, gameboard;
+var lt = 0.0, dt = 0.0;
 
 var VIEW_ANGLE = 45;
 var NEAR = 0.1, FAR = 10000;
@@ -20,17 +21,21 @@ App.start = function(){
   scene.add(camera);
 
   camera.position.x = 0;
-  camera.position.y = 6;
+  camera.position.y = 7;
   camera.position.z = 7;
-  camera.lookAt(V3(0, 0, 0));
+  camera.lookAt(V3(0,0,0));
 
-  scene.add(new GameBoard());
+  gameboard = new GameBoard();
+  scene.add(gameboard);
 
   var ambient = new THREE.AmbientLight(0x202020);
   scene.add(ambient);
-  var light = new THREE.PointLight(0xffffff, 1, 100);
+  var light = new THREE.PointLight(0xffffff, 0.4, 100);
   light.position.set(0, 10, 0);
   scene.add(light);
+  var light2 = new THREE.PointLight(0xffffff, 0.8, 100);
+  light2.position.set(3, 10, 5);
+  scene.add(light2);
 
   window.addEventListener('resize', App.resize, false);
   App.resize();
@@ -49,8 +54,13 @@ App.start = function(){
   App.update();
 };
 
-App.update = function(){
-  renderer.render(scene, camera);
+App.update = function(t){
+  if (t) {
+    dt = t - lt;
+    lt = t;
+    gameboard.update(dt);
+    renderer.render(scene, camera);
+  }
   requestAnimationFrame(App.update);
 };
 

@@ -62,4 +62,25 @@ GameBoard.prototype.initialize = function(){
     slider(-1,-3),
   ];
   this.sliders.forEach(function(s){this.add(s)}.bind(this));
+
+  // player models
+  this.player1 = new PlayerModel('green');
+  this.player1.position.set(-3,0.1,3);
+  this.player1.rotation.set(0,PI,0);
+  this.player1.animate('walk');
+  this.add(this.player1);
+  this.player2 = new PlayerModel('red');
+  this.player2.position.set(3,0.1,-3);
+  this.player2.animate('walk');
+  this.add(this.player2);
+};
+
+GameBoard.prototype.update = function(dt){
+  this.player1.update(dt);
+  this.player2.update(dt);
+};
+
+GameBoard.prototype.getIntersectedCells = function(){
+  var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+  var intersects = raycaster.intersectObjects( objects );
 };
