@@ -3,10 +3,13 @@
 var App = window.App = {};
 
 var $app, renderer, camera, scene, gameboard;
+var mouse, projector;
 var lt = 0.0, dt = 0.0;
 
 var VIEW_ANGLE = 45;
 var NEAR = 0.1, FAR = 10000;
+
+App.raycaster = null;
 
 App.start = function(){
   $app = document.querySelector("#app");
@@ -51,6 +54,18 @@ App.start = function(){
     camera.lookAt(V3(0, 0, 0));
   });
 
+  mouse = new THREE.Vector2();
+  App.raycaster = new THREE.Raycaster();
+
+  window.addEventListener('mousemove', function(e) {
+    e.preventDefault();
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  });
+  window.addEventListener('click', function(e) {
+    gameboard.playerClick();
+  });
+
   App.update();
 };
 
@@ -58,10 +73,14 @@ App.update = function(t){
   if (t) {
     dt = t - lt;
     lt = t;
+
+    App.raycaster.setFromCamera( mouse, camera );
     gameboard.update(dt);
     renderer.render(scene, camera);
   }
-  requestAnimationFrame(App.update);
+  // setTimeout(function(){
+    requestAnimationFrame(App.update);
+  // }, 500);
 };
 
 App.resize = function(){
