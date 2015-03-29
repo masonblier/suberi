@@ -87,10 +87,7 @@ GameBoard.prototype.initialize = function(){
     slider(3,-1),
     slider(3,-3),//tr
     slider(1,-3),
-    slider(-1,-3),
-
-    slider(-2,3),
-    slider(-3,2),
+    slider(-1,-3)
   ];
   this.sliders.forEach(function(s){this.add(s)}.bind(this));
 
@@ -100,15 +97,15 @@ GameBoard.prototype.initialize = function(){
   this.player1.rotation.set(0,PI,0);
   // this.player1.animate('walk');
   this.add(this.player1);
-  this.player2 = new PlayerModel('red');
-  this.player2.position.set(3,0.1,-3);
-  // this.player2.animate('walk');
-  this.add(this.player2);
+  // this.player2 = new PlayerModel('red');
+  // this.player2.position.set(3,0.1,-3);
+  // // this.player2.animate('walk');
+  // this.add(this.player2);
 };
 
 GameBoard.prototype.update = function(dt){
   this.player1.update(dt);
-  this.player2.update(dt);
+  // this.player2.update(dt);
 
   // clear previous changes
   if (this.mouseOverTile) {
@@ -233,14 +230,22 @@ GameBoard.prototype.update = function(dt){
     }
 
     if (completed) {
-      this.state = 'player-move';
-      this.animatingMove = null;
-      this.player1.animate(null);
+      if (this.player1.position.x===0 && this.player1.position.z===0) {
+        // win condition
+        App.showWinScreen();
 
-      // if move.tpye==='walk'
-        // this.state = 'player-move';
-      // else
-        // this.state = 'opponent-move';
+      } else {
+        this.animatingMove = null;
+        this.player1.animate(null);
+        if (am.type==='walk') {
+          // repeat player move after walk
+          this.state = 'player-move';
+        } else if (am.type==='slide') {
+          // player move over
+          // this.state = 'opponent-move';
+          this.state = 'player-move';
+        }
+      }
     }
 
   } else {

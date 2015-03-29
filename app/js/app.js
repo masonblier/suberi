@@ -10,6 +10,7 @@ var VIEW_ANGLE = 45;
 var NEAR = 0.1, FAR = 10000;
 
 App.raycaster = null;
+App.paused = false;
 
 App.start = function(){
   $app = document.querySelector("#app");
@@ -78,9 +79,9 @@ App.update = function(t){
     gameboard.update(dt);
     renderer.render(scene, camera);
   }
-  // setTimeout(function(){
+  if (!App.paused) {
     requestAnimationFrame(App.update);
-  // }, 500);
+  }
 };
 
 App.resize = function(){
@@ -90,6 +91,16 @@ App.resize = function(){
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
+};
+
+App.showWinScreen = function(){
+  App.paused = true;
+  var $winScreen = document.createElement('div');
+  $winScreen.className = 'win-screen';
+  $winScreen.innerHTML = '<div class="win-message">'+
+                          '<h1>You win!</h1><a href="/">New Game</a>'+
+                         '</div>';
+  $app.appendChild($winScreen);
 };
 
 })();

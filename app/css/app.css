@@ -2,10 +2,34 @@ html, body {
   width: 100%;
   height: 100%;
   margin: 0;
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
 }
-#app, #app>canvas {
+#app, #app>canvas,
+#app>.win-screen {
+  position: absolute;
   display: block;
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+.win-message {
+  display: block;
+  width: 400px;
+  margin: 300px auto;
+  padding: 20px 40px;
+  text-align: center;
+  color: white;
+  background: rgba(0,0,0,0.7);
+}
+.win-message > h1 {
+  font-size: 48px;
+  margin: 10px 0;
+}
+.win-message > a {
+  font-size: 18px;
+  color: #39c0f3;
+}
+.win-message > a:hover {
+  color: #50c9ff;
 }
