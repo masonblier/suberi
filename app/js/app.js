@@ -25,8 +25,8 @@ App.start = function(){
   scene.add(camera);
 
   camera.position.x = 0;
-  camera.position.y = 7;
-  camera.position.z = 7;
+  camera.position.y = 8;
+  camera.position.z = 8;
   camera.lookAt(V3(0,0,0));
 
   gameboard = new GameBoard();
@@ -98,7 +98,7 @@ App.showWinScreen = function(){
   var $winScreen = document.createElement('div');
   $winScreen.className = 'win-screen';
   $winScreen.innerHTML = '<div class="win-message">'+
-                          '<h1>You win!</h1><a href="/">New Game</a>'+
+                          '<h1>You win!</h1><a href="./">New Game</a>'+
                          '</div>';
   $app.appendChild($winScreen);
 };
