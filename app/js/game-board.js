@@ -87,7 +87,9 @@ GameBoard.prototype.initialize = function(){
     slider(3,-1),
     slider(3,-3),//tr
     slider(1,-3),
-    slider(-1,-3)
+    slider(-1,-3),
+
+    slider(1,0)
   ];
   this.sliders.forEach(function(s){this.add(s)}.bind(this));
 
@@ -265,6 +267,9 @@ GameBoard.prototype.playerClick = function(){
     if (clickedTile) {
       var move = this.checkMove(clickedTile.position.x, clickedTile.position.z);
       if (move) {
+        if (move.type==='slide') {
+          App.increaseMoveCount();
+        }
         this.animatingMove = move;
         this.state = 'animating';
       }

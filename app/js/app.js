@@ -2,7 +2,8 @@
 
 var App = window.App = {};
 
-var $app, renderer, camera, scene, gameboard;
+var $app, $movesDisplay;
+var renderer, camera, scene, gameboard;
 var mouse, projector;
 var lt = 0.0, dt = 0.0;
 
@@ -12,11 +13,26 @@ var NEAR = 0.1, FAR = 10000;
 App.raycaster = null;
 App.paused = false;
 
+App.moves = 0;
+
 App.start = function(){
   $app = document.querySelector("#app");
 
-  renderer = new THREE.WebGLRenderer({antialias: true});
+  renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: true
+  });
+  renderer.setClearColor(0x101010, 1);
   $app.appendChild(renderer.domElement);
+
+  var $display = document.createElement('div');
+  $display.className = "display";
+  $display.innerHTML = '<div>Moves</div>';
+  $movesDisplay = document.createElement('div');
+  $movesDisplay.className = "move-count";
+  $movesDisplay.innerHTML = App.moves;
+  $display.appendChild($movesDisplay);
+  $app.appendChild($display);
 
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(
@@ -93,12 +109,19 @@ App.resize = function(){
   renderer.setSize(w, h);
 };
 
+App.increaseMoveCount = function(){
+  App.moves += 1;
+  $movesDisplay.innerHTML = App.moves;
+};
+
 App.showWinScreen = function(){
   App.paused = true;
   var $winScreen = document.createElement('div');
   $winScreen.className = 'win-screen';
   $winScreen.innerHTML = '<div class="win-message">'+
-                          '<h1>You win!</h1><a href="./">New Game</a>'+
+                          '<h1>You win!</h1>'+
+                          '<p>Game completed in '+App.moves+' moves</p>'+
+                          '<a href="./">Reset</a>'+
                          '</div>';
   $app.appendChild($winScreen);
 };
