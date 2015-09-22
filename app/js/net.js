@@ -2,7 +2,9 @@ var net = window.net = {};
 var ws;
 
 net.connect = function(){
-  ws = new WebSocket('ws://'+window.location.hostname+':'+window.location.port+'/multiplayer');
+  ws = new WebSocket('ws://'+window.location.hostname+
+    (window.location.port ? ':'+window.location.port : '')
+    +window.location.pathname+'multiplayer');
   ws.addEventListener('open', function(){
     net.emitEvent('open');
   });
